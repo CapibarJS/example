@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  accountId   BigInt        @id(map: "pkAccount") @default(autoincrement())
+  login       String        @db.VarChar(64)
+  password    String        @db.VarChar
+  AccountRole AccountRole[]
+  Session     Session[]
+}
+
+model AccountRole {
+  accountId BigInt
+  roleId    BigInt
+  Account   Account @relation(fields: [accountId], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "fkAccountRoleAccount")
+  Role      Role    @relation(fields: [roleId], references: [roleId], onDelete: NoAction, onUpdate: NoAction, map: "fkAccountRoleRole")
+
+  @@id([accountId, roleId], map: "pkAccountRole")
+}
+
+model Island {
+  islandId   BigInt @id(map: "pkIsland") @default(autoincrement())
+  name       String @db.VarChar
+  location   String @db.VarChar
+  area       Float
+  population Int
+}
+
+model Role {
+  roleId      BigInt        @id(map: "pkRole") @default(autoincrement())
+  name        String        @db.VarChar
+  AccountRole AccountRole[]
+}
+
+model Session {
+  sessionId BigInt  @id(map: "pkSession") @default(autoincrement())
+  accountId BigInt
+  token     String  @db.VarChar
+  ip        String  @db.Inet
+  data      Json
+  Account   Account @relation(fields: [accountId], references: [accountId], onDelete: NoAction, onUpdate: NoAction, map: "fkSessionAccount")
+}
+
+model Ship {
+  shipId     BigInt   @id(map: "pkShip") @default(autoincrement())
+  name       String   @db.VarChar
+  shipTypeId BigInt
+  ShipType   ShipType @relation(fields: [shipTypeId], references: [shipTypeId], onDelete: NoAction, onUpdate: NoAction, map: "fkShipShipType")
+}
+
+model ShipType {
+  shipTypeId BigInt @id(map: "pkShipType") @default(autoincrement())
+  name       String @db.VarChar
+  Ship       Ship[]
+}

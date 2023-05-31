@@ -1,0 +1,32 @@
+{
+  "name": "@capibar/example",
+  "version": "0.1.0",
+  "description": "",
+  "main": "app/main.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node app/main.js",
+    "sync": "prisma introspect && prisma generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CapibarJS/example.git"
+  },
+  "author": "CapibarJS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CapibarJS/example/issues"
+  },
+  "homepage": "https://github.com/CapibarJS/example#readme",
+  "dependencies": {
+    "@prisma/client": "^4.14.1",
+    "@capibar/core": "0.1.1",
+    "@capibar/client": "0.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "18.15.3",
+    "prisma": "^4.14.1"
+  }
+}

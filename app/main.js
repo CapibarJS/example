@@ -14,8 +14,8 @@ const server = new Server({
   prisma: Prisma,
   crud: {
     findMany: (entity) => defineApi({
-      params: ['limit:?int'],
-      method: async (args) => entity.findMany(args),
+      params: ['skip:?int', 'take:?int', 'where'],
+      method: async (args) => entity.findMany(args)
     }),
     findOne: (entity) => async (args) => entity.findUnique(args),
     create: (entity) => async (args) => entity.create(args),

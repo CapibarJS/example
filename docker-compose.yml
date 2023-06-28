@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  postgres-local:
+  capibar-postgres:
     image: postgres:14.1-alpine3.15
     container_name: postgres-local
     environment:
@@ -12,6 +12,15 @@ services:
       - ./db/data/:/var/lib/postgresql/data
       - ./db/structure.sql:/docker-entrypoint-initdb.d/1.sql
       - ./db/data.sql:/docker-entrypoint-initdb.d/2.sql
-    ports:
-      - "5432:5432"
     restart: always
+
+  capibar-example:
+    build: .
+    container_name: capibar-js-example
+    depends_on:
+      - postgres-local
+    restart: always
+    ports:
+      - "5500:5500"
+      - "5501:5501"
+      - "5502:5502"

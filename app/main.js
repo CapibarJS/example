@@ -1,5 +1,6 @@
 const {Server, Schema, defineApi} = require('@capibar/core');
 const {PrismaClient, Prisma} = require("@prisma/client");
+const packageJSON = require('../package.json');
 
 BigInt.prototype.toJSON = function () {
   const int = Number.parseInt(this.toString());
@@ -9,9 +10,16 @@ BigInt.prototype.toJSON = function () {
 const db = new PrismaClient();
 
 const server = new Server({
+  meta: {
+    name: packageJSON.name,
+    description: packageJSON.description,
+    version: packageJSON.version,
+  },
+
   Schema,
   db,
   prisma: Prisma,
+
   crud: {
     findMany: (entity) => defineApi({
       params: ['skip:?int', 'take:?int', 'where'],
@@ -23,9 +31,15 @@ const server = new Server({
     delete: (entity) => async (args) => entity.delete(args),
   },
   config: {
+    static: {
+      port: 5500,
+    },
     network: {
       http: {
-        port: 3001,
+        port: 5501,
+      },
+      ws: {
+        port: 5502,
       },
     },
   },

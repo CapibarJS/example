@@ -16,8 +16,11 @@ FROM alpine:3.16 as builder
 WORKDIR /app
 COPY . ./
 COPY --from=installer /app/node_modules ./node_modules
+RUN cp .env.docker .env
 RUN apk add --no-cache --update --virtual .build-deps npm
 RUN npm install -g yarn
+
+ENV DATABASE_URL="postgresql://admin:admin@db:5432/app?schema=public"
 
 # Build
 RUN npx prisma generate
